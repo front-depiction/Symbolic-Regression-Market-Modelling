@@ -1,0 +1,3 @@
+Best formula: sub(sub(add(div(X25, X27), abs(div(X25, X27))), add(cos(sqrt(X20)), cos(sub(inv(mul(tan(X3), add(sub(add(div(X25, X27), abs(sub(inv(X8), sub(add(div(X25, X27), abs(div(X25, X27))), add(cos(div(X25, X27)), cos(add(cos(div(sub(inv(X8), div(X25, X27)), neg(inv(X2)))), sqrt(sin(tan(add(cos(div(sub(div(X2, X9), X8), neg(inv(X2)))), abs(add(X25, X27))))))))))))), add(div(X2, X9), cos(add(cos(div(div(X25, X27), neg(div(X25, X27)))), cos(sqrt(X24)))))), X25))), inv(X22))))), sub(tan(sqrt(X24)), X8))
+Score: 0.322022694694047
+Mean absolute error: 1246.6602097005666
