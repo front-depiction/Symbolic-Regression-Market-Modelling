@@ -58,4 +58,4 @@ tkinter
 
 You can install them using pip:
 
-```pip install pandas fredapi gplearn scikit-learn matplotlib tkinter```
+```pip install pandas fredapi gplearn scikit-learn matplotlib```
