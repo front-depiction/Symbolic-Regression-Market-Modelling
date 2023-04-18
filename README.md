@@ -1,4 +1,4 @@
-#Stock Market Prediction using Symbolic Regression
+#Stock Market Prediction using Symbolic Regression#
 
 This repository contains a Python-based application that uses symbolic regression machine learning to model and predict stock market performance. The application leverages a graphical user interface (GUI) to download and process data from the Federal Reserve Bank of St. Louis economic database (FRED) API seamlessly.
 
