@@ -14,7 +14,7 @@ Run main.py to launch the GUI.
 
 The left side of the GUI holds a data unifier that automatically joins the selected market data into one .csv file.
 Input start and end dates, and resampling time interval.
-Manual code allows you to manually add to the list using a FRED code. On the FRED website, find an indicator and just add the code.
+Manual code allows you to manually add to the list using a FRED code. On the [FRED website](https://fred.stlouisfed.org/), find an indicator and just add the code.
 In the lists, you can double-click items to move them from selected to available indicators.
 The right side of the GUI holds the model training parameters.
 Number of processes: The number of processes simultaneously analyzing the data with different random seeds.
@@ -35,15 +35,15 @@ Other fields include:
 
 8. Tournament size: Number of individuals randomly selected from the population to compete in the selection process based on their fitness scores.
 
-9. Parsimony coefficients: Coefficient to control the trade-off between model complexity and fit. Higher values encourage simpler models.
+ 9. Parsimony coefficients: Coefficient to control the trade-off between model complexity and fit. Higher values encourage simpler models.
 
-10. T offset: Number of time units to offset the prediction.
+ 10. T offset: Number of time units to offset the prediction.
 
-11. T offset unit: Unit of time for the offset (e.g., weeks, months, or quarters).
+ 11. T offset unit: Unit of time for the offset (e.g., weeks, months, or quarters).
 
-12. Start and end training dates: Date range for training the symbolic regression model.
+ 12. Start and end training dates: Date range for training the symbolic regression model.
 
-13. Set the output parameters for the graph (timeframe): Time range for displaying the graph with the actual market data and the predictions from the model.
+ 13. Set the output parameters for the graph (timeframe): Time range for displaying the graph with the actual market data and the predictions      from the model.
 
 # Dependencies
 
@@ -58,4 +58,4 @@ tkinter
 
 You can install them using pip:
 
-'''pip install pandas fredapi gplearn scikit-learn matplotlib tkinter'''
+```pip install pandas fredapi gplearn scikit-learn matplotlib tkinter```
