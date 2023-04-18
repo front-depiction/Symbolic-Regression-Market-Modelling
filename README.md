@@ -1,14 +1,17 @@
-#Stock Market Prediction using Symbolic Regression#
+# Stock Market Prediction using Symbolic Regression
 
 This repository contains a Python-based application that uses symbolic regression machine learning to model and predict stock market performance. The application leverages a graphical user interface (GUI) to download and process data from the Federal Reserve Bank of St. Louis economic database (FRED) API seamlessly.
 
-#Files
+# Files
 
 main.py: The main file that has to be run and holds the GUI.
 processing.py: Holds all the functions for data processing and model training.
 Usage
 
 Run main.py to launch the GUI.
+
+# GUI
+
 The left side of the GUI holds a data unifier that automatically joins the selected market data into one .csv file.
 Input start and end dates, and resampling time interval.
 Manual code allows you to manually add to the list using a FRED code. On the FRED website, find an indicator and just add the code.
@@ -41,6 +44,8 @@ Other fields include:
 12. Start and end training dates: Date range for training the symbolic regression model.
 
 13. Set the output parameters for the graph (timeframe): Time range for displaying the graph with the actual market data and the predictions from the model.
+
+# Dependencies
 
 To run the application, you need the following packages installed:
 
