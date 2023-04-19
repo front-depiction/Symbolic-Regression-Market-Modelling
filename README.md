@@ -54,7 +54,6 @@ fredapi
 gplearn
 sklearn
 matplotlib
-tkinter
 
 You can install them using pip:
 
