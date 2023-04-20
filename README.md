@@ -12,6 +12,19 @@ Run main.py to launch the GUI.
 
 # GUI
 
+                    ---------------------------------------------------------------------------------------------------------------
+                    |                                                  #main_frame#                                               |
+                    +------------------------------------------------------+------------------------------------------------------+
+                    |                    left_frame                        |                    right_frame                       |
+                    +------------------------------------------------------+------------------------------------------------------+
+                    |                     top_frame                        |                  train_model_frame                   |
+                    |    Includes all input fields for data selector       |  allows to change the symbolic regression parameters |
+                    +------------------------------------------------------+------------------------------------------------------+
+                    |                   bottom_frame                       |                   graphing_frame                     |
+                    |  tree views for the selection of indicator pool      |   allows to change graphic and output parameters     |
+                    +------------------------------------------------------+------------------------------------------------------+
+                    
+
 The left side of the GUI holds a data unifier that automatically joins the selected market data into one .csv file.
 Input start and end dates, and resampling time interval.
 Manual code allows you to manually add to the list using a FRED code. On the [FRED website](https://fred.stlouisfed.org/), find an indicator and just add the code.
