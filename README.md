@@ -18,7 +18,7 @@ Run main.py to launch the GUI.
         |                    left_frame                        |                    right_frame                       |
         +------------------------------------------------------+------------------------------------------------------+
         |                     top_frame                        |                  train_model_frame                   |
-        |    Includes all input fields for data selector       |  allows to change the symbolic regression parameters |
+        |    includes all input fields for data selector       |  allows to change the symbolic regression parameters |
         +------------------------------------------------------+------------------------------------------------------+
         |                   bottom_frame                       |                   graphing_frame                     |
         |  tree views for the selection of indicator pool      |   allows to change graphic and output parameters     |
