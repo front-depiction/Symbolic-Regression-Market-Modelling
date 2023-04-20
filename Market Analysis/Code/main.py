@@ -1,3 +1,31 @@
+"""
+ .o88o.                                    .                     .o8                        o8o                .    o8o                        
+ 888 `"                                  .o8                    "888                        `"'              .o8    `"'                        
+o888oo  oooo d8b  .ooooo.  ooo. .oo.   .o888oo              .oooo888   .ooooo.  oo.ooooo.  oooo   .ooooo.  .o888oo oooo   .ooooo.  ooo. .oo.   
+ 888    `888""8P d88' `88b `888P"Y88b    888               d88' `888  d88' `88b  888' `88b `888  d88' `"Y8   888   `888  d88' `88b `888P"Y88b  
+ 888     888     888   888  888   888    888               888   888  888ooo888  888   888  888  888         888    888  888   888  888   888  
+ 888     888     888   888  888   888    888 .             888   888  888    .o  888   888  888  888   .o8   888 .  888  888   888  888   888  
+o888o   d888b    `Y8bod8P' o888o o888o   "888" ooooooooooo `Y8bod88P" `Y8bod8P'  888bod8P' o888o `Y8bod8P'   "888" o888o `Y8bod8P' o888o o888o 
+                                                                                 888                                                           
+                                                                                o888o                                                          
+
+                                                            GUI sketch for clarity:       
+
+
+                ---------------------------------------------------------------------------------------------------------------
+                |                                                  #main_frame#                                               |
+                +------------------------------------------------------+------------------------------------------------------+
+                |                    left_frame                        |                    right_frame                       |
+                +------------------------------------------------------+------------------------------------------------------+
+                |                     top_frame                        |                  train_model_frame                   |
+                |    Includes all input fields for data selector       |  allows to change the symbolic regression parameters |
+                +------------------------------------------------------+------------------------------------------------------+
+                |                   bottom_frame                       |                   graphing_frame                     |
+                |  tree views for the selection of indicator pool      |   allows to change graphic and output parameters     |
+                +------------------------------------------------------+------------------------------------------------------+
+
+"""
+
 # Imports
 #____________________________________________________________
 from fredapi import Fred
@@ -44,164 +72,27 @@ if __name__ == '__main__':
         "GS1",  # 1-Year Treasury Constant Maturity Rate
         "GS5",  # 5-Year Treasury Constant Maturity Rate
     ]
-
-
-
-
     default_indicators = ["UNRATE", "CPIAUCSL", "GDP", "FEDFUNDS", "PAYEMS"]
 
     start_date = '2000-01-01'
     end_date = '2021-01-01'
     time_interval = 'M'
 
-
-    # Initialize frames
-    #____________________________________________________________
-    main_frame = tk.Tk()
-    main_frame.title("FRED Data Resampler & Data Processor")
-
-    main_frame.columnconfigure(0, weight=1)  # Add this line
-    main_frame.rowconfigure(0, weight=1)     # Add this line
-
-    left_frame = tk.Frame(main_frame)
-    left_frame.grid(row=0, column=0, sticky="nsew")
-    left_frame.columnconfigure(0, weight=1)  # Add this line
-    left_frame.rowconfigure(0, weight=0)     # Add this line
-    left_frame.rowconfigure(1, weight=1)     # Add this line
-
-    right_frame = tk.Frame(main_frame)       # Add this line
-    right_frame.grid(row=0, column=1, sticky="nsew")  # Add this line
-    right_frame.columnconfigure(0, weight=1)  # Add this line
-    right_frame.rowconfigure(0, weight=3)     # Add this line
-    right_frame.rowconfigure(1, weight=1)     # Add this line
-
-    top_frame = tk.Frame(left_frame)
-    top_frame.grid(row=0, column=0, columnspan=3, sticky="new")
-    top_frame.columnconfigure(0, weight=0)
-    top_frame.columnconfigure(1, weight=1)
-
-    bottom_frame = tk.Frame(left_frame)
-    bottom_frame.grid(row=1, column=0, sticky="nsew")  # Add pady=(5, 5)
-    bottom_frame.columnconfigure(0, weight=1)
-    bottom_frame.rowconfigure(1, weight=1)
-    bottom_frame.rowconfigure(3, weight=1)
-
-
-
-
-    train_model_frame = tk.Frame(right_frame)  # Update this line
-    train_model_frame.grid(row=0, column=0, padx=(10, 10), pady=(10, 10), sticky="nsew")  # Update this line
-    for i in range(15):
-        train_model_frame.rowconfigure(i, minsize=30, weight=1)
-
-    graphing_frame = tk.Frame(right_frame)  # Update this line
-    graphing_frame.grid(row=1, column=0, padx=(10, 10), pady=(10, 10), sticky="nsew")  # Update this line
-    for i in range(3):
-        graphing_frame.rowconfigure(i, minsize=30, weight=1)
-
-    # Configure input fields
-    #____________________________________________________________
-    # Add input fields for API key, start date, end date, time interval, and output path
-    api_key_var = tk.StringVar(value='6fcfd7e4aa7dc78d6e9635ed058d3fc4')
-    start_date_var = tk.StringVar(value=start_date)
-    end_date_var = tk.StringVar(value=end_date)
-    time_interval_var = tk.StringVar(value=time_interval)
-
-    api_key_label = tk.Label(top_frame, text="API Key:")
-    api_key_entry = tk.Entry(top_frame, textvariable=api_key_var)
-    start_date_label = tk.Label(top_frame, text="Start Date:")
-    start_date_entry = tk.Entry(top_frame, textvariable=start_date_var)
-    end_date_label = tk.Label(top_frame, text="End Date:")
-    end_date_entry = tk.Entry(top_frame, textvariable=end_date_var)
-    time_interval_label = tk.Label(top_frame, text="Time Interval:")
-    time_interval_combobox = ttk.Combobox(top_frame, textvariable=time_interval_var, values=['W', 'M', 'Q'])
-    output_path_var = tk.StringVar(value=output_path)
-
-    output_path_label = tk.Label(top_frame, text="Output Path:")
-    output_path_entry = tk.Entry(top_frame, textvariable=output_path_var)
-
-
-    output_path_label.grid(row=4, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
-    output_path_entry.grid(row=4, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
-
-    api_key_label.grid(row=0, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
-    api_key_entry.grid(row=0, column=1, padx=(0, 10), pady=(10, 5), sticky="ew")
-    start_date_label.grid(row=1, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
-    start_date_entry.grid(row=1, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
-    end_date_label.grid(row=2, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
-    end_date_entry.grid(row=2, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
-    time_interval_label.grid(row=3, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
-    time_interval_combobox.grid(row=3, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
-
-
-    # Configure indicator treeviews
-    #____________________________________________________________
-    # Add treeviews for available and selected indicators
-    available_label = tk.Label(bottom_frame, text="Available Indicators:")
-    available_label.grid(row=0, column=0, padx=(10, 10), pady=(5, 0), sticky="w")
-
-    selected_treeview = ttk.Treeview(bottom_frame, selectmode=tk.EXTENDED)
-
-    selected_label = tk.Label(bottom_frame, text=f"Selected Indicators: {len(selected_treeview.get_children())}")
-    selected_label.grid(row=2, column=0, padx=(10, 10), pady=(5, 0), sticky="w")
-
-    selected_treeview["columns"] = ("code", "desc")
-    selected_treeview["show"] = "headings"
-    selected_treeview.column("code", width=100, anchor="w")
-    selected_treeview.column("desc", width=400, anchor="w")
-    selected_treeview.heading("code", text="Code")
-    selected_treeview.heading("desc", text="Description")
-
-    selected_treeview.grid(row=3, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
-
-    indicator_treeview = ttk.Treeview(bottom_frame, selectmode=tk.EXTENDED)
-    indicator_treeview["columns"] = ("code", "desc")
-    indicator_treeview["show"] = "headings"
-    indicator_treeview.column("code", width=100, anchor="w")
-    indicator_treeview.column("desc", width=400, anchor="w")
-    indicator_treeview.heading("code", text="Code")
-    indicator_treeview.heading("desc", text="Description")
-
-    fred = Fred(api_key=api_key_var.get())
-
-    sorted_indicators = []
-
-    for code in available_indicators:
-        try:
-            series_info = fred.get_series_info(code)
-            title = series_info.title
-            sorted_indicators.append((code, title))
-        except Exception as e:
-            print(f"Failed to get series info for code {code}: {e}")
-
-    sorted_indicators = sorted(sorted_indicators, key=lambda x: x[1])
-
-    for code, title in sorted_indicators:
-        indicator_treeview.insert("", tk.END, values=(code, title))
-
-
-
-
-    indicator_treeview.grid(row=1, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
-
-
     # Functions
     #____________________________________________________________
     # Define functions for adding manual indicator and handling double-click events
-
     def on_add_manual_indicator():
+        # Check if the input is valid
         new_code = manual_code_var.get()
         if not new_code:
             messagebox.showerror("Error", "Please enter an indicator code.")
             return
-
-        # Check if the input is alphanumeric and not longer than 25 characters
         if not new_code.isalnum() or len(new_code) > 25:
             messagebox.showerror("Error", "Invalid series_id. Series IDs should be 25 or less alphanumeric characters.")
             return
 
         try:
-            # Check if the indicator already exists in the indicator_treeview
+            # Check if the indicator already exists
             for child in indicator_treeview.get_children():
                 if indicator_treeview.item(child)['values'][0] == new_code:
                     new_item = indicator_treeview.item(child, "values")
@@ -214,18 +105,20 @@ if __name__ == '__main__':
                     messagebox.showwarning("Warning", "The indicator already exists.")
                     return
 
+            # Get the series information and add the indicator to the selected indicators list
             series_info = fred.get_series_info(new_code)
             new_item = (new_code, series_info.title)
             selected_treeview.insert("", tk.END, values=new_item)
 
+            # Update the selected indicators count label
             selected_label.config(text=f"Selected Indicators: {len(selected_treeview.get_children())}")
 
         except Exception as e:
+            # Show error message if failed to add the indicator
             messagebox.showerror("Error", f"Failed to add the indicator: {e}")
 
-
-
     def on_double_click(event, source_treeview, target_treeview):
+        # Move selected row from source treeview to target treeview on double click
         item_id = source_treeview.identify_row(event.y)
         if item_id:
             item_values = source_treeview.item(item_id, "values")
@@ -238,33 +131,209 @@ if __name__ == '__main__':
             for index, (value, child) in enumerate(items):
                 target_treeview.move(child, "", index)
 
+        # Update the selected indicators count label
         selected_label.config(text=f"Selected Indicators: {len(selected_treeview.get_children())}")
 
-
-
-
-
     def on_submit():
+        # Get the input values and selected indicators
         api_key = api_key_var.get()
         start_date = start_date_var.get()
         end_date = end_date_var.get()
         time_interval = time_interval_var.get()
         output_path = output_path_var.get()
-
         selected_indicators = [indicator_treeview.item(i)["values"][0] for i in indicator_treeview.selection()] + \
                             [selected_treeview.item(i)["values"][0] for i in selected_treeview.get_children()]
 
+        # Check if all required fields are filled and at least one indicator is selected
         if not api_key or not start_date or not end_date or not time_interval or not selected_indicators:
             messagebox.showerror("Error", "Please fill in all fields and select at least one indicator.")
             return
 
         try:
+            # Resample the FRED data and save it to output path
             resample_fred_data(api_key, selected_indicators, start_date, end_date, time_interval, output_path)
             messagebox.showinfo("Success", f"Data saved at {output_path_var.get()} ")
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
+    # Create a function to execute the train_model with the given parameters
+    def execute_train_model():
+        train_model(
+            population_size=population_size_var.get(),
+            generations=generations_var.get(),
+            p_crossover=p_crossover_var.get(),
+            p_subtree_mutation=p_subtree_mutation_var.get(),
+            p_hoist_mutation=p_hoist_mutation_var.get(),
+            p_point_mutation=p_point_mutation_var.get(),
+            max_samples=max_samples_var.get(),
+            tournament_size=tournament_size_var.get(),
+            parsimony_coefficient=parsimony_coefficient_var.get(),
+            t_offset=t_offset_var.get(),
+            t_frame=t_frame_var.get(),
+            start_training=start_training_var.get(),
+            end_training=end_training_var.get(),
+            start_graphing=start_graphing_var.get(),
+            end_graphing=end_graphing_var.get(),
+            market_data_path=market_data_path_var.get(),
+            resampled_data_path=output_path_var.get(),
+            output_path=result_output_path_var.get(),
+            n_processes=n_processes_var.get()
+        )
+    
+    # Initialize frames
+    #____________________________________________________________
+    # Create the main tkinter window
+    main_frame = tk.Tk()
+    main_frame.title("FRED Data Resampler & Data Processor")
 
+    # Set the grid configuration for main_frame
+    main_frame.columnconfigure(0, weight=1)  
+    main_frame.rowconfigure(0, weight=1)     
+
+    # Create the left frame and set its grid configuration
+    left_frame = tk.Frame(main_frame)
+    left_frame.grid(row=0, column=0, sticky="nsew")
+    left_frame.columnconfigure(0, weight=1)  
+    left_frame.rowconfigure(0, weight=0)     
+    left_frame.rowconfigure(1, weight=1)     
+
+    # Create the right frame and set its grid configuration
+    right_frame = tk.Frame(main_frame)       
+    right_frame.grid(row=0, column=1, sticky="nsew")  
+    right_frame.columnconfigure(0, weight=1)  
+    right_frame.rowconfigure(0, weight=3)     
+    right_frame.rowconfigure(1, weight=1)     
+
+    # Create the top frame and set its grid configuration
+    top_frame = tk.Frame(left_frame)
+    top_frame.grid(row=0, column=0, columnspan=3, sticky="new")
+    top_frame.columnconfigure(0, weight=0)
+    top_frame.columnconfigure(1, weight=1)
+
+    # Create the bottom frame and set its grid configuration
+    bottom_frame = tk.Frame(left_frame)
+    bottom_frame.grid(row=1, column=0, sticky="nsew", pady=(5, 5))  
+    bottom_frame.columnconfigure(0, weight=1)
+    bottom_frame.rowconfigure(1, weight=1)
+    bottom_frame.rowconfigure(3, weight=1)
+
+    # Create the train model frame and set its grid configuration
+    train_model_frame = tk.Frame(right_frame) 
+    train_model_frame.grid(row=0, column=0, padx=(10, 10), pady=(10, 10), sticky="nsew") 
+    for i in range(15):
+        train_model_frame.rowconfigure(i, minsize=30, weight=1)
+
+    # Create the graphing frame and set its grid configuration
+    graphing_frame = tk.Frame(right_frame) 
+    graphing_frame.grid(row=1, column=0, padx=(10, 10), pady=(10, 10), sticky="nsew") 
+    for i in range(3):
+        graphing_frame.rowconfigure(i, minsize=30, weight=1)
+
+
+######################################################################################################################################################################################################################################
+                                                                                                             #LEFT SIDE#
+######################################################################################################################################################################################################################################
+    # Configure input fields
+    #____________________________________________________________
+    # Create variables for API key, start date, end date, time interval, and output path
+    api_key_var = tk.StringVar(value='6fcfd7e4aa7dc78d6e9635ed058d3fc4')
+    start_date_var = tk.StringVar(value=start_date)
+    end_date_var = tk.StringVar(value=end_date)
+    time_interval_var = tk.StringVar(value=time_interval)
+    output_path_var = tk.StringVar(value=output_path)
+
+    # Create labels and input fields for API key, start date, end date, time interval, and output path
+    data_selector = tk.Label(top_frame, text="Data Selector", font=("Helvetica", 16, "bold"))
+    data_selector.grid(row=0, column=0, pady=(20, 10), padx=(10,10), sticky="ew")
+
+    api_key_label = tk.Label(top_frame, text="API Key:")
+    api_key_entry = tk.Entry(top_frame, textvariable=api_key_var)
+    api_key_label.grid(row=1, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
+    api_key_entry.grid(row=1, column=1, padx=(0, 10), pady=(10, 5), sticky="ew")
+
+    start_date_label = tk.Label(top_frame, text="Start Date:")
+    start_date_entry = tk.Entry(top_frame, textvariable=start_date_var)
+    start_date_label.grid(row=2, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
+    start_date_entry.grid(row=2, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
+
+    end_date_label = tk.Label(top_frame, text="End Date:")
+    end_date_entry = tk.Entry(top_frame, textvariable=end_date_var)
+    end_date_label.grid(row=3, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
+    end_date_entry.grid(row=3, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
+
+    time_interval_label = tk.Label(top_frame, text="Time Interval:")
+    time_interval_combobox = ttk.Combobox(top_frame, textvariable=time_interval_var, values=['W', 'M', 'Q'])
+    time_interval_label.grid(row=4, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
+    time_interval_combobox.grid(row=4, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
+
+    output_path_label = tk.Label(top_frame, text="Output Path:")
+    output_path_entry = tk.Entry(top_frame, textvariable=output_path_var)
+    output_path_label.grid(row=5, column=0, padx=(10, 5), pady=(5, 5), sticky="w")
+    output_path_entry.grid(row=5, column=1, padx=(0, 10), pady=(5, 5), sticky="ew")
+
+
+    # Configure manual code input and button
+    #____________________________________________________________
+    # Create labels and input fields for manual code entry and button
+    manual_code_label = tk.Label(top_frame, text="Manual Code:")
+    manual_code_var = tk.StringVar()
+    manual_code_entry = tk.Entry(top_frame, textvariable=manual_code_var)
+    manual_code_button = tk.Button(top_frame, text="Add", command=on_add_manual_indicator)
+
+    # Add manual code label, entry, and button to the top frame
+    manual_code_label.grid(row=8, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
+    manual_code_entry.grid(row=8, column=1, padx=(0, 5), pady=(10, 5), sticky="ew")
+    manual_code_button.grid(row=8, column=2, padx=(5, 10), pady=(10, 5), sticky="ew")
+
+
+    # Configure indicator treeviews
+    #____________________________________________________________
+    # Create label and treeviews for available and selected indicators
+    available_label = tk.Label(bottom_frame, text="Available Indicators:")
+    available_label.grid(row=0, column=0, padx=(10, 10), pady=(5, 0), sticky="w")
+
+    selected_treeview = ttk.Treeview(bottom_frame, selectmode=tk.EXTENDED)
+
+    # Create label for selected indicators and set initial value
+    selected_label = tk.Label(bottom_frame, text=f"Selected Indicators: {len(selected_treeview.get_children())}")
+    selected_label.grid(row=2, column=0, padx=(10, 10), pady=(5, 0), sticky="w")
+
+    # Configure selected_treeview
+    selected_treeview["columns"] = ("code", "desc")
+    selected_treeview["show"] = "headings"
+    selected_treeview.column("code", width=100, anchor="w")
+    selected_treeview.column("desc", width=400, anchor="w")
+    selected_treeview.heading("code", text="Code")
+    selected_treeview.heading("desc", text="Description")
+    selected_treeview.grid(row=3, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
+
+    # Configure indicator_treeview
+    indicator_treeview = ttk.Treeview(bottom_frame, selectmode=tk.EXTENDED)
+    indicator_treeview["columns"] = ("code", "desc")
+    indicator_treeview["show"] = "headings"
+    indicator_treeview.column("code", width=100, anchor="w")
+    indicator_treeview.column("desc", width=400, anchor="w")
+    indicator_treeview.heading("code", text="Code")
+    indicator_treeview.heading("desc", text="Description")
+
+    # Initialize fred object with API key
+    fred = Fred(api_key=api_key_var.get())
+
+    # Retrieve series info for available indicators and sort alphabetically by title
+    sorted_indicators = []
+    for code in available_indicators:
+        try:
+            series_info = fred.get_series_info(code)
+            title = series_info.title
+            sorted_indicators.append((code, title))
+        except Exception as e:
+            print(f"Failed to get series info for code {code}: {e}")
+    sorted_indicators = sorted(sorted_indicators, key=lambda x: x[1])
+
+    # Add sorted indicators to indicator_treeview
+    for code, title in sorted_indicators:
+        indicator_treeview.insert("", tk.END, values=(code, title))
+    indicator_treeview.grid(row=1, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
 
 
     # Bind double-click events
@@ -272,38 +341,20 @@ if __name__ == '__main__':
     indicator_treeview.bind("<Double-1>", lambda event: on_double_click(event, indicator_treeview, selected_treeview))
     selected_treeview.bind("<Double-1>", lambda event: on_double_click(event, selected_treeview, indicator_treeview))
 
-
-    # Configure manual code input and button
-    #____________________________________________________________
-    manual_code_label = tk.Label(top_frame, text="Manual Code:")
-    manual_code_var = tk.StringVar()
-    manual_code_entry = tk.Entry(top_frame, textvariable=manual_code_var)
-    manual_code_button = tk.Button(top_frame, text="Add", command=on_add_manual_indicator)
-
-    manual_code_label.grid(row=8, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
-    manual_code_entry.grid(row=8, column=1, padx=(0, 5), pady=(10, 5), sticky="ew")
-    manual_code_button.grid(row=8, column=2, padx=(5, 10), pady=(10, 5), sticky="ew")
-
-
     # Configure submit button
     #____________________________________________________________
     submit_button = tk.Button(bottom_frame, text="Submit", command=on_submit)
     submit_button.grid(row=4, column=0, columnspan=2, padx=(10, 10), pady=(10, 10), sticky="sew")
 
 
+######################################################################################################################################################################################################################################
+                                                                                                             #RIGHT SIDE#
+######################################################################################################################################################################################################################################
 
-
-
-    #Data Processor program, on the right of the screen
-    # Constants
+    # Configure input fields
     #____________________________________________________________
-
-
-    # Initialize frames
-    #____________________________________________________________
-
     # Add input fields for the train_model function parameters
-    market_data_path_var = tk.StringVar(value='/Users/yourusername/Desktop/Market Analysis/NASDAQCOM.csv')
+    market_data_path_var = tk.StringVar(value='/Users/florienlazaro/Desktop/Market Analysis/NASDAQCOM.csv')
     n_processes_var = tk.IntVar(value=int(cpu_count() / 2))
     population_size_var = tk.IntVar(value=1000)
     generations_var = tk.IntVar(value=20)
@@ -354,8 +405,6 @@ if __name__ == '__main__':
     end_training_label = tk.Label(train_model_frame, text="End Training:")
     end_training_entry = tk.Entry(train_model_frame, textvariable=end_training_var)
 
-
-
     # Place train_model parameter input fields in the grid layout
     market_data_path_label.grid(row=1, column=0, sticky="w", pady=(5, 5))
     market_data_path_entry.grid(row=1, column=1, sticky="w", pady=(5, 5))
@@ -388,17 +437,18 @@ if __name__ == '__main__':
     end_training_label.grid(row=15, column=0, sticky="w", pady=(5, 5))
     end_training_entry.grid(row=15, column=1, sticky="w", pady=(5, 5))
 
-
-
     # Graphing Parameters
     #____________________________________________________________
+    # Create label for output parameters
     output_label = tk.Label(graphing_frame, text="Output Parameters", font=("Helvetica", 16, "bold"))
     output_label.grid(row=0, column=0, pady=(10, 10), sticky="ew")
 
+    # Set default values for start date, end date, and output path
     start_graphing_var = tk.StringVar(value='2000-01-01')
     end_graphing_var = tk.StringVar(value='2021-01-01')
-    result_output_path_var = tk.StringVar(value='/Users/yourusername/Desktop/Market Analysis/output.txt')
+    result_output_path_var = tk.StringVar(value='/Users/florienlazaro/Desktop/Market Analysis/output.txt')
 
+    # Create labels and entry fields for start date, end date, and output path
     start_graphing_label = tk.Label(graphing_frame, text="Start Graphing:")
     start_graphing_entry = tk.Entry(graphing_frame, textvariable=start_graphing_var)
     end_graphing_label = tk.Label(graphing_frame, text="End Graphing:")
@@ -406,6 +456,7 @@ if __name__ == '__main__':
     result_output_path_label = tk.Label(graphing_frame, text="Output Path:")
     result_output_path_entry = tk.Entry(graphing_frame, textvariable=result_output_path_var)
 
+    # Set grid layout for the labels and entry fields
     start_graphing_label.grid(row=1, column=0, sticky="w", pady=(5, 5))
     start_graphing_entry.grid(row=1, column=1, sticky="w", pady=(5, 5))
     end_graphing_label.grid(row=2, column=0, sticky="w", pady=(5, 5))
@@ -413,42 +464,9 @@ if __name__ == '__main__':
     result_output_path_label.grid(row=3, column=0, sticky="w", pady=(5, 5))
     result_output_path_entry.grid(row=3, column=1, sticky="w", pady=(5, 5))
 
-
-
-
-
-
-
-    # Create a function to execute the train_model with the given parameters
-    def execute_train_model():
-        train_model(
-            population_size=population_size_var.get(),
-            generations=generations_var.get(),
-            p_crossover=p_crossover_var.get(),
-            p_subtree_mutation=p_subtree_mutation_var.get(),
-            p_hoist_mutation=p_hoist_mutation_var.get(),
-            p_point_mutation=p_point_mutation_var.get(),
-            max_samples=max_samples_var.get(),
-            tournament_size=tournament_size_var.get(),
-            parsimony_coefficient=parsimony_coefficient_var.get(),
-            t_offset=t_offset_var.get(),
-            t_frame=t_frame_var.get(),
-            start_training=start_training_var.get(),
-            end_training=end_training_var.get(),
-            start_graphing=start_graphing_var.get(),
-            end_graphing=end_graphing_var.get(),
-            market_data_path=market_data_path_var.get(),
-            resampled_data_path=output_path_var.get(),
-            output_path=result_output_path_var.get(),
-            n_processes=n_processes_var.get()
-        )
-
     # Add a button to execute the train_model function with the input parameters
     execute_button = tk.Button(graphing_frame, text="Execute", command=execute_train_model)
-
     execute_button.grid(row=4, column=0, columnspan=2, sticky="we")
 
-
-
-
+    # Start the main loop of the GUI
     main_frame.mainloop()
